@@ -5,7 +5,7 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const posts = await Post.find({ user: req.user.id }).lean();
-      res.render("profile", { posts: posts, user: req.user });
+      res.json(posts);
     } catch (err) {
       console.log(err);
     }
@@ -13,7 +13,7 @@ module.exports = {
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();
-      res.render("feed", { posts: posts });
+      res.json(posts);
     } catch (err) {
       console.log(err);
     }
@@ -31,7 +31,7 @@ module.exports = {
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
 
-      await Post.create({
+      const post = await Post.create({
         title: req.body.title,
         image: result.secure_url,
         cloudinaryId: result.public_id,
@@ -40,7 +40,7 @@ module.exports = {
         user: req.user.id,
       });
       console.log("Post has been added!");
-      res.redirect("/profile");
+      res.json({ post });
     } catch (err) {
       console.log(err);
     }

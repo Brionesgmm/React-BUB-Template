@@ -4,11 +4,11 @@ import Messages from "../components/Messages";
 import { useEffect } from "react";
 
 function Root() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const [messages, setMessages] = useState({});
 
   useEffect(() => {
-    fetch("/user")
+    fetch("/api/user")
       .then((res) => res.json())
       .then((res) => setUser(res.user));
   }, []);
@@ -23,7 +23,6 @@ function Root() {
           <span>The #100Devs Social Network</span>
         </div>
       </header>
-      <p>Hello {user?.userName}</p>
       <Messages messages={messages} />
       <Outlet context={{ user, setUser, setMessages }} />
     </>

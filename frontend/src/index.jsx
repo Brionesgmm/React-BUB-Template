@@ -8,6 +8,9 @@ import ErrorPage from "./routes/Error";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Index from "./routes/Index";
+import Profile from "./routes/Profile";
+import Logout from "./routes/Logout";
+import Feed from "./routes/Feed";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +27,20 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: "/logout",
+        element: <Logout />,
+      },
+      {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/feed",
+        element: <Feed />,
       },
     ],
   },

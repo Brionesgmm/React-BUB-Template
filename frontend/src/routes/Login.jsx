@@ -1,26 +1,25 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 function Login() {
-  const {setUser, setMessages} = useOutletContext()
+  const { setUser, setMessages } = useOutletContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = async event => {
-    event.preventDefault()
-    const form = event.currentTarget
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
     const response = await fetch(form.action, {
       method: form.method,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams(new FormData(form))
-    })
-    const json = await response.json()
-    if(json.messages){
-      setMessages(json.messages)
+      body: new URLSearchParams(new FormData(form)),
+    });
+    const json = await response.json();
+    if (json.messages) {
+      setMessages(json.messages);
     }
-    if(json.user){
-      setUser(json.user)
+    if (json.user) {
+      setUser(json.user);
+      navigate("/profile");
     }
-  }
+  };
 
   return (
     <main className="container">
