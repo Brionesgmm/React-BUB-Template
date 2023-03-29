@@ -1,8 +1,7 @@
-import React from "react";
-import Main from "./components/Main";
+import "./App.css";
 
-const Index = () => (
-  <Main>
+function App() {
+  return (
     <main className="container">
       <div className="row justify-content-around mt-5">
         <a href="/login" className="col-3 btn btn-primary">
@@ -13,7 +12,7 @@ const Index = () => (
         </a>
       </div>
     </main>
-  </Main>
-);
+  );
+}
 
-export default Index;
+export default App;

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Messages = ({ messages }) => (
   <>
     {messages.errors
@@ -9,9 +7,16 @@ const Messages = ({ messages }) => (
           </div>
         ))
       : null}
+      {messages.success
+      ? messages.success.map((el, i) => (
+          <div key={i} className="alert alert-success">
+            {el.msg}
+          </div>
+        ))
+      : null}
     {messages.info
       ? messages.info.map((el, i) => (
-          <div key={i} className="alert alert-danger">
+          <div key={i} className="alert alert-info">
             {el.msg}
           </div>
         ))
