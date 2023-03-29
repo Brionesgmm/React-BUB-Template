@@ -11,6 +11,7 @@ import Index from "./routes/Index";
 import Profile from "./routes/Profile";
 import Logout from "./routes/Logout";
 import Feed from "./routes/Feed";
+import Post from "./routes/Post";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/feed",
         element: <Feed />,
+      },
+      {
+        path: "/post/:id",
+        element: <Post />,
       },
     ],
   },

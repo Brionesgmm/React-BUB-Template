@@ -21,7 +21,7 @@ module.exports = {
   getPost: async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);
-      res.render("post", { post: post, user: req.user });
+      res.json({ post: post || null });
     } catch (err) {
       console.log(err);
     }
@@ -47,14 +47,17 @@ module.exports = {
   },
   likePost: async (req, res) => {
     try {
-      await Post.findOneAndUpdate(
+      const post = await Post.findOneAndUpdate(
         { _id: req.params.id },
         {
           $inc: { likes: 1 },
+        },
+        {
+          new: true,
         }
       );
       console.log("Likes +1");
-      res.redirect(`/post/${req.params.id}`);
+      res.json(post.likes);
     } catch (err) {
       console.log(err);
     }
