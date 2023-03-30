@@ -1,14 +1,34 @@
-import React from "react";
-import Main from "./components/Main";
-import Messages from "./components/Messages";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const Signup = ({ messages }) => (
-  <Main>
+function Signup() {
+  const { setUser, setMessages } = useOutletContext();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const response = await fetch(form.action, {
+      method: form.method,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(new FormData(form)),
+    });
+    const json = await response.json();
+    if (json.messages) {
+      setMessages(json.messages);
+    }
+    if (json.user) {
+      setUser(json.user);
+      navigate("/profile");
+    }
+  };
+
+  return (
     <main className="container">
       <div className="row justify-content-center">
         <section className="col-6 mt-5">
-          <Messages messages={messages} />
-          <form action="/signup" method="POST">
+          <form action="/signup" method="POST" onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="userName" className="form-label">
                 User Name
@@ -64,7 +84,7 @@ const Signup = ({ messages }) => (
         </section>
       </div>
     </main>
-  </Main>
-);
+  );
+}
 
 export default Signup;

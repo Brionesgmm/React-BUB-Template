@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -22,10 +23,10 @@ connectDB();
 
 //Using JSX for views
 app.set("view engine", "jsx");
-app.engine('jsx', require('express-react-views').createEngine());
+app.engine("jsx", require("express-react-views").createEngine());
 
 //Static Folder
-app.use(express.static("public"));
+app.use(express.static("frontend/build"));
 
 //Body Parsing
 app.use(express.urlencoded({ extended: true }));
@@ -56,7 +57,11 @@ app.use(flash());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
-app.use("/post", postRoutes);
+app.use("/api/post", postRoutes);
+
+app.use("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build/index.html"));
+});
 
 //Server Running
 app.listen(process.env.PORT, () => {
