@@ -6,15 +6,6 @@ exports.getUser = (req, res) => {
   res.json({ user: req.user || null });
 };
 
-exports.getLogin = (req, res) => {
-  if (req.user) {
-    return res.redirect("/profile");
-  }
-  res.render("login", {
-    title: "Login",
-  });
-};
-
 exports.postLogin = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
@@ -57,15 +48,6 @@ exports.logout = (req, res) => {
       console.log("Error : Failed to destroy the session during logout.", err);
     req.user = null;
     res.redirect("/");
-  });
-};
-
-exports.getSignup = (req, res) => {
-  if (req.user) {
-    return res.redirect("/profile");
-  }
-  res.render("signup", {
-    title: "Create Account",
   });
 };
 
