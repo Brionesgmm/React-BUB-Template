@@ -1,14 +1,31 @@
-import React from "react";
-import Main from "./components/Main";
-import Messages from "./components/Messages";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const Login = ({ messages }) => (
-  <Main>
+function Login() {
+  const { setUser, setMessages } = useOutletContext();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: new URLSearchParams(new FormData(form)),
+    });
+    const json = await response.json();
+    if (json.messages) {
+      setMessages(json.messages);
+    }
+    if (json.user) {
+      setUser(json.user);
+      navigate("/profile");
+    }
+  };
+
+  return (
     <main className="container">
       <div className="row justify-content-center">
         <section className="col-6 mt-5">
-          <Messages messages={messages} />
-          <form action="/login" method="POST">
+          <form action="/login" method="POST" onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Email address
@@ -39,7 +56,7 @@ const Login = ({ messages }) => (
         </section>
       </div>
     </main>
-  </Main>
-);
+  );
+}
 
 export default Login;

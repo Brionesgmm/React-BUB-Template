@@ -1,9 +1,40 @@
-import React from "react";
-import Main from "./components/Main";
-import PostList from "./components/PostList";
+import { useEffect, useState } from "react";
+import { Link, useOutletContext } from "react-router-dom";
+import PostList from "../components/PostList";
 
-const Profile = ({ user, posts }) => (
-  <Main>
+const Profile = () => {
+  const { user, setMessages } = useOutletContext();
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => setPosts(data));
+  }, []);
+
+  if (!user) {
+    return null;
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+    });
+    const json = await response.json();
+    if (json.messages) {
+      setMessages(json.messages);
+    }
+    if (json.post) {
+      setPosts([...posts, json.post]);
+      form.reset();
+    }
+  };
+
+  return (
     <div className="container">
       <div className="row mt-5">
         <div className="col-6">
@@ -14,16 +45,17 @@ const Profile = ({ user, posts }) => (
             <p>
               <strong>Email</strong>: {user.email}
             </p>
-            <a href="/logout" className="col-3 btn btn-primary">
+            <Link to="/logout" className="col-3 btn btn-primary">
               Logout
-            </a>
+            </Link>
           </div>
           <div className="mt-5">
             <h2>Add a post</h2>
             <form
-              action="/post/createPost"
+              action="/api/post/createPost"
               encType="multipart/form-data"
               method="POST"
+              onSubmit={handleSubmit}
             >
               <div className="mb-3">
                 <label htmlFor="title" className="form-label">
@@ -66,14 +98,14 @@ const Profile = ({ user, posts }) => (
         <div className="col-6">
           <PostList posts={posts} />
           <div className="row justify-content-center mt-5">
-            <a className="btn btn-primary" href="/feed">
+            <Link className="btn btn-primary" to="/feed">
               Return to Feed
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     </div>
-  </Main>
-);
+  );
+};
 
 export default Profile;
