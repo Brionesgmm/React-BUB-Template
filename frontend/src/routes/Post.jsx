@@ -37,9 +37,9 @@ const Post = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const response = await fetch(form.action, {
-      method: form.method,
-    });
+    // const response = await fetch(form.action, {
+    //   method: form.method,
+    // });
     navigate(-1);
   };
 
