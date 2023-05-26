@@ -21,10 +21,6 @@ require("./config/passport")(passport);
 //Connect To Database
 connectDB();
 
-//Using JSX for views
-app.set("view engine", "jsx");
-app.engine("jsx", require("express-react-views").createEngine());
-
 //Static Folder
 app.use(express.static("frontend/build"));
 
@@ -58,6 +54,9 @@ app.use(flash());
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
 app.use("/api/post", postRoutes);
+app.use("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build/index.html"));
+});
 
 app.use("*", (_, res) => {
   res.sendFile(path.join(__dirname, "frontend/build/index.html"));
